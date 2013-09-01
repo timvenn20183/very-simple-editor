@@ -1,0 +1,26 @@
+The purpose of the Venn Editor is to write a very simple editor in order to understand
+the basic concepts of editor design. This with a view to later creating an editor for a home
+grown operating system. 
+
+The other driving force behind the project is to gain some workable experience with C++ and 
+ncurses on a text console.
+
+Please note that this editor is by no means a complete, full featured editor. The purpose of this 
+editor is to understand what would be required to build a simple editor. I am sure there are many
+ways to improve on the way in which certain features have been implemented.
+
+The editor is divided into smaller modules and each handles a specific section:
+
+- Main
+- Screen 
+- Keyboard
+- File
+- Memory
+- Other
+
+To compile simply use the existing Makefile and type:
+
+make
+
+
+
