@@ -1,0 +1,36 @@
+For years I have been tempted to write a simple editor that is capable of doing the basics that I use in my favourite editor (vi). These are to read a file, update, write, find / replace, copy, paste, undo and go to a specific line number. This is really the basics, in my opinion, of any simple editor. So after a long and hard think I decided to build a framework to see exactly how hard it would be to write such and editor. I have chosen c++ as the language in the hopes of making it portable but given my ultimate goal of using the concepts learnt during the development of this editor, for my own homegrown operating system the final language of choice is still in the air.
+
+I looked for documents, books, blogs and in a number of other places in order to get some ideas on best practices and generally good ways of building the editor logic. I must say that either my google'fu is bad or there aren't a lot of documents on the subject of editor design. Hundreds of sites will tell you how to build a simple GTK , QT or other graphical based editor but not much on console ones. Finally I went and had a number of cups of coffee with a long time friend who, many years ago in the days of DOS, wrote his own editor.  Although the days of DOS brought many limitations they also brought some useful restrictions, such as console size, but the experience has given me the urge to finally start the framework.
+
+This documents is broken in to sections relating to the areas of the editor that I have tackled or will still tackle but I did write most of this documents to clarify things before I started the real coding. What I also found very usefull was to write a batch of small samples to test ideas before implementing them in the editor. 
+
+Console editors are a warzone of issues. The screen can get dragged to a new size, some have colours and others not but what I did was to decide on some design concepts and constraints for the initial attempts. I have listed these below.
+
+- requires ncurses for console handling
+- the screen can and will most likely be resized on the editor so wait till the user has made up theirmind before taking the new size into account and treat the change almost as a reload
+- changes will be saved on a character by character basis and will be store on an undo stack
+- if the file can be opened we read and edit else we will use the filename when saving
+- the only argument the editor takes on the command line is the filename
+- memory is a large flat space. Perhaps later versions will read smaller sections into ram.
+- I am by no means the worlds most experienced programmer so there will always be better ways to do what I have done
+- first do no harm means that we create a backup copy of the file before editing
+
+Is this an existing file ?
+--------------------------
+What I have decided to do is to keep it simple. Pass a filename on the command line. If the file exists we open it else we will use it for the new filename when we save. There may be other arguments passed at a later stage but this is it for now. I cannot rember when, if ever, I have passed anything other then the filename to my favourite editor.
+
+Reading the file into memory
+----------------------------
+Memory is treated, for now, as a large flat area so we read the entire file into ram. Perhaps later versions will be more ram friendly. Having said that the file is read into a linked list of a set number of characters per memory allocation. This will be around 80 for traditions sake. If a line has changes or insertions then this linked list will be modified. The display to screen will look for new line characters in order to determine if a new line should be displayed. What this does is make it very hard to find line 100 or 656 but this will be dealt with later since... it depends on a number of factors such as the screen size etc. 
+
+Saving the file from memory
+---------------------------
+Basically this mean traversing the linked list elements and writting them to disk. Do not save null (unused chracters in the block) to the disk.
+
+Inserting
+---------
+If you update the value of a character it will change the character in the block but inserting a new character may mean that you have to extend outside the block. If so add a block and update the relevant pointers to the previous and next blocks. This then gives you a new block of n characters to work in.
+
+Removing 
+--------
+If you have removed all the characters from a block then drop the block from the linked list and update the previous and next list pointers. Remember to free up the memory used by the block !
