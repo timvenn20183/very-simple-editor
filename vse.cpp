@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include "vse_file.cpp"
+#include "vse_scrn.cpp"
 
 using namespace std;
 
