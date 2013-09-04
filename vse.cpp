@@ -39,12 +39,10 @@ void append_new_block()
     // stub
 }
 
-// return the last block
-block last_block()
+// return last block
+void last_block()
 {
     // stub
-    block *pointer = start_pointer;
-    return block
 }
 
 // SCREEN ROUTINES
@@ -68,8 +66,7 @@ int main(int argc, char* argv[]) {
     // setup    
     start_pointer->prev = NULL;
     start_pointer->next = NULL;
-    last_block();
-
+    strcpy(start_pointer->content,"TIM");
     return 0;
 }
 
